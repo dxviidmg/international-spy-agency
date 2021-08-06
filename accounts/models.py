@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
-    status_choices =(
+    state_choices =(
         ("Active","Active"),
         ("Retired", "Retired"),
         ("Dead", "Dead")
@@ -15,7 +15,7 @@ class Profile(models.Model):
         ("Hitman", "Hitman")
     )
 
-    state = models.CharField(max_length=10, choices=status_choices, default="Active")
+    state = models.CharField(max_length=10, choices=state_choices, default="Active")
     type_user = models.CharField(max_length=10, choices=type_user_choices, default="Hitman")
     boss = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
