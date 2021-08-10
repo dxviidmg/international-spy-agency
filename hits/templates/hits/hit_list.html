@@ -1,1 +1,15 @@
-{}
+<h1>Book List</h1>
+
+{% if hit_list %}
+<ul>
+
+  {% for hit in hit_list %}
+  <li>
+    <a href="">{{ hit.pk }}</a>
+  </li>
+  {% endfor %}
+
+</ul>
+{% else %}
+  <p>There are no books in the library.</p>
+{% endif %} 
