@@ -1,0 +1,17 @@
+<h1>Book List</h1>
+
+<a href="">Create</a>
+
+{% if user_list %}
+<ul>
+
+  {% for user in user_list %}
+  <li>
+    <a href="{%url 'accounts:hitman-update' user.pk%}">{{ user.username }}</a>
+  </li>
+  {% endfor %}
+
+</ul>
+{% else %}
+  <p>There are no books in the library.</p>
+{% endif %} 

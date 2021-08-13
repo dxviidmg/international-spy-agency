@@ -1,11 +1,13 @@
 <h1>Book List</h1>
 
+<a href="{%url 'hits:hit-create'%}">Create</a>
+
 {% if hit_list %}
 <ul>
 
   {% for hit in hit_list %}
   <li>
-    <a href="">{{ hit.pk }}</a>
+    <a href="{{hit.get_absolute_url}}">{{ hit.pk }}</a>
   </li>
   {% endfor %}
 
