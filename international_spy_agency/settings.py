@@ -132,3 +132,5 @@ from django.urls import reverse_lazy
 
 LOGIN_REDIRECT_URL = reverse_lazy('hits:hit-list')
 #LOGOUT_REDIRECT_URL = reverse_lazy('accounts:login')
+
+AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']

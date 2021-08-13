@@ -3,7 +3,17 @@ from django.views.generic import ListView
 from django.contrib.auth.models import User
 from accounts.models import Profile
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth import views as auth_views
+from django.views import generic
+from django.urls import reverse_lazy
 
+from .forms import LoginForm, RegisterForm
+
+
+class LoginView(auth_views.LoginView):
+    form_class = LoginForm
+    template_name = 'accounts/login.html'
+    
 
 class HitmenListView(ListView):
     model = User
