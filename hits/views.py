@@ -40,6 +40,12 @@ class HitUpdateView(UpdateView):
 #    fields = ['state']
     template_name = 'hits/hit_form.html'
 
+    def get_form_kwargs(self):
+        kwargs = super(HitUpdateView, self).get_form_kwargs()
+        profile = Profile.objects.get(user=self.request.user)
+        kwargs.update({'user': self.request.user, 'profile': profile})
+        return kwargs
+
     def get_form_class(self):
         profile = Profile.objects.get(user=self.request.user)
 
