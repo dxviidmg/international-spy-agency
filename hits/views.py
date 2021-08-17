@@ -8,6 +8,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from hits.forms import *
 
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 class HitListView(ListView):
     model = Hit
@@ -31,9 +33,28 @@ class HitListView(ListView):
 
 class HitCreateView(CreateView):
     model = Hit
-    fields = ['hitman', 'description', 'target_name']
+#    fields = ['hitman', 'description', 'target_name']
     template_name = 'hits/hit_form.html'
 
+    @method_decorator(permission_required('Hit.can_add_hit',raise_exception=True))
+    def dispatch(self, request):
+        return super(HitCreateView, self).dispatch(request)
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.assigned_by = self.request.user
+        obj.save()        
+        return super(HitCreateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(HitCreateView, self).get_form_kwargs()
+        profile = Profile.objects.get(user=self.request.user)
+        kwargs.update({'user': self.request.user, 'profile': profile})
+        return kwargs
+
+    def get_form_class(self):
+        profile = Profile.objects.get(user=self.request.user)
+        return HitCreateForm
 
 class HitUpdateView(UpdateView):
     model = Hit

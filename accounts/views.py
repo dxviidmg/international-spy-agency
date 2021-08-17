@@ -8,6 +8,8 @@ from django.views import generic
 from django.urls import reverse_lazy
 
 from .forms import LoginForm, RegisterForm
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 
 class LoginView(auth_views.LoginView):
@@ -38,7 +40,7 @@ class HitmenListView(ListView):
             users = hitmen_profiles.values("user")
 
         elif type_user == 'Hitman':
-            print('error')
+            raise PermissionDenied
 
         return queryset
 
@@ -46,12 +48,7 @@ class HitmenListView(ListView):
 class HitmanUpdateView(UpdateView):
     model = Profile
     fields = ['state', 'boss']
-#    template_name = 'hits/hit_form.html'
 
-#    def get_form_class(self):
-#        profile = Profile.objects.get(user=self.request.user)#
-
-#        if profile.type_user == 'Hitman':
-#            return HitUpdateFormHitman
-#        else:
-#            return HitUpdateFormManager
+    @method_decorator(permission_required('Hit.can_change_profile',raise_exception=True))
+    def dispatch(self, request):
+        return super(HitCreateView, self).dispatch(request)
