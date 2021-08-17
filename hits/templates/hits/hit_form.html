@@ -1,6 +1,14 @@
 {% block content %}
   <h2>{% if object %}Update{% else %}Create{% endif %} Hit</h2>
 
+  <a href="{%url 'hits:hit-list'%}">Back</a>
+
+  <p>hitman: {{object.hitman}}</p>
+  <p>description: {{object.description}}</p>
+  <p>target_name: {{object.target_name}}</p>
+  <p>state: {{object.state}}</p>
+
+    
   <form action="" method="post">
     {% csrf_token %}
 

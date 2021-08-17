@@ -37,7 +37,7 @@ class HitCreateView(CreateView):
     template_name = 'hits/hit_form.html'
 
     @method_decorator(permission_required('Hit.can_add_hit',raise_exception=True))
-    def dispatch(self, request):
+    def dispatch(self, request, pk):
         return super(HitCreateView, self).dispatch(request)
 
     def form_valid(self, form):

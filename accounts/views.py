@@ -33,8 +33,6 @@ class HitmenListView(ListView):
         if type_user == 'Boss':
             queryset = User.objects.all()
 
-            print(queryset)
-
         elif type_user == 'Manager':
             hitmen_profiles = Profile.objects.filter(boss=self.request.user)
             users = hitmen_profiles.values("user")
@@ -50,5 +48,11 @@ class HitmanUpdateView(UpdateView):
     fields = ['state', 'boss']
 
     @method_decorator(permission_required('Hit.can_change_profile',raise_exception=True))
-    def dispatch(self, request):
-        return super(HitCreateView, self).dispatch(request)
+    def dispatch(self, request, pk):
+        return super(HitmanUpdateView, self).dispatch(request)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['hitman_user'] = self.object.user
+        return context
